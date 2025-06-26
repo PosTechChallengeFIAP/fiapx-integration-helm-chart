@@ -57,7 +57,7 @@ jobs:
 
     - name: Uninstall If Exists
       run: |
-        helm list -n default -q | xargs -n1 helm uninstall -n default
+        helm list -n default -q | xargs -r -n1 helm uninstall -n default
 
     - name: Update Submodules
       run: |
