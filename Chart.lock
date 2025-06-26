@@ -1,0 +1,9 @@
+dependencies:
+- name: fiapx-user-management
+  repository: file://charts/fiapx-user-management-helm-chart
+  version: 0.1.0
+- name: fiapx-video-processor
+  repository: file://charts/fiapx-video-processor-helm-chart
+  version: 0.1.0
+digest: sha256:a4cae2c24018c6f8599966b6b412a26ef3f285494ed490075bd770339935dd05
+generated: "2025-06-25T23:28:03.214866-03:00"
