@@ -15,8 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout code with submodules
       uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -59,11 +62,7 @@ jobs:
       run: |
         helm list -n default -q | xargs -r -n1 helm uninstall -n default
 
-    - name: Update Submodules
-      run: |
-        git submodule update --init --recursive
-
-    - name: Update Submodules
+    - name: Update Helm dependency
       run: |
         helm dependency update
 
