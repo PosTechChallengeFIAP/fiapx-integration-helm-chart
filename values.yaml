@@ -1,0 +1,45 @@
+fiapx-user-management:
+  replicaCount: 2
+
+  image:
+    repository: loadinggreg/fiapx-user-management
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 80
+    targetPort: 8080
+    nodePort: 30080
+
+  mysql:
+    database: springdb
+    user: springuser
+
+fiapx-video-processor:
+  replicaCount: 2
+
+  image:
+    repository: loadinggreg/fiapx-video-processor
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 80
+    targetPort: 8080
+    nodePort: 30081
+
+  storage:
+    type: local
+    uploadDir: uploads
+    ouputDir: output
+    aws:
+      credentials: session
+      region: aws-region
+
+  mysql:
+    database: springdb
+    user: springuser
+
+  persistence:
+    size: 10Gi
+    storageClass: standard

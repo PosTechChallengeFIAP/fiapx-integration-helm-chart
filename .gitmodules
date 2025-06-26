@@ -1,6 +1,6 @@
 [submodule "fiapx-user-management-helm-chart"]
-	path = fiapx-user-management-helm-chart
+	path = charts/fiapx-user-management-helm-chart
 	url = git@github.com:PosTechChallengeFIAP/fiapx-user-management-helm-chart.git
 [submodule "fiapx-video-processor-helm-chart"]
-	path = fiapx-video-processor-helm-chart
+	path = charts/fiapx-video-processor-helm-chart
 	url = git@github.com:PosTechChallengeFIAP/fiapx-video-processor-helm-chart.git

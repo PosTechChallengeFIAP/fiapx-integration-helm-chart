@@ -1,0 +1,12 @@
+apiVersion: v2
+name: fiapx-integration-chart
+version: 0.1.0
+description: Integration chart for user management and video processor
+
+dependencies:
+  - name: fiapx-user-management
+    version: 0.1.0
+    repository: "file://charts/fiapx-user-management-helm-chart"
+  - name: fiapx-video-processor
+    version: 0.1.0
+    repository: "file://charts/fiapx-video-processor-helm-chart"
