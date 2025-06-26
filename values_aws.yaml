@@ -7,7 +7,7 @@ fiapx-user-management:
     pullPolicy: IfNotPresent
 
   service:
-    type: NodePort
+    type: LoadBalancer
     port: 80
     targetPort: 8080
     nodePort: 30080
@@ -19,29 +19,29 @@ fiapx-user-management:
 fiapx-video-processor:
   replicaCount: 2
 
+  storage:
+    type: aws
+    uploadDir: fiapx-uploaded-videos
+    ouputDir: fiapx-resulted-zipfiles
+    aws:
+      credentials: session
+      region: us-east-1
+
   image:
     repository: loadinggreg/fiapx-video-processor
     tag: latest
     pullPolicy: IfNotPresent
 
   service:
-    type: NodePort
+    type: LoadBalancer
     port: 80
     targetPort: 8080
     nodePort: 30081
-
-  storage:
-    type: local
-    uploadDir: uploads
-    ouputDir: output
-    aws:
-      credentials: session
-      region: aws-region
 
   mysql:
     database: springdb
     user: springuser
 
   persistence:
-    size: 10Gi
-    storageClass: standard
+    size: 
+    storageClass: 
