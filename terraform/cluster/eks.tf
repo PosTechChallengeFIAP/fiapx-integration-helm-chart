@@ -8,6 +8,8 @@ resource "aws_eks_cluster" "main" {
     subnet_ids =  module.vpc.private_subnets
     endpoint_public_access = true
   }
+
+  depends_on = [module.vpc]
 }
 
 resource "aws_eks_node_group" "main" {
