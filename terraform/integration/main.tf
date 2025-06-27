@@ -8,7 +8,7 @@ provider "aws" {
 locals {
   cluster_outputs       = jsondecode(file("${path.module}/cluster_outputs.json"))
   vpc_id                = local.cluster_outputs.vpc_id.value
-  private_subnet_ids    = local.cluster_outputs.private_subnet_ids.value
+  private_subnet_ids    = local.cluster_outputs.private_subnets.value
 }
 
 terraform {
