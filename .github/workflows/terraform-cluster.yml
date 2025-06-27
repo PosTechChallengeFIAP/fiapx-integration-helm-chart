@@ -36,9 +36,7 @@ jobs:
         working-directory: ./terraform/cluster
         run: |
           export TF_LOG=DEBUG
-          terraform init -input=false
-        env:
-          TF_INPUT: false
+          terraform init
 
       - name: Terraform Apply
         working-directory: ./terraform/cluster
