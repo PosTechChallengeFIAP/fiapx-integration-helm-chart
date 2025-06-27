@@ -24,7 +24,7 @@ jobs:
 
       - name: Update kubeconfig
         run: |
-          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name academy-eks-cluster
+          aws eks update-kubeconfig --region us-east-1 --name academy-eks-cluster
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v3
