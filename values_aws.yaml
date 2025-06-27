@@ -21,8 +21,8 @@ fiapx-video-processor:
 
   storage:
     type: aws
-    uploadDir: fiapx-uploaded-videos
-    ouputDir: fiapx-resulted-zipfiles
+    uploadDir: fiapx-uploaded-videos-0
+    ouputDir: fiapx-resulted-zipfiles-0
     aws:
       credentials: session
       region: us-east-1
