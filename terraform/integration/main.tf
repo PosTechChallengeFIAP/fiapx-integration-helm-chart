@@ -5,18 +5,26 @@ provider "aws" {
   token      = var.aws_session_token
 }
 
-locals {
-  cluster_outputs       = jsondecode(file("${path.module}/cluster_outputs.json"))
-  vpc_id                = local.cluster_outputs.vpc_id.value
-  private_subnet_ids    = local.cluster_outputs.private_subnets.value
-}
-
 terraform {
   backend "s3" {
-    bucket         = "terraform-integration-state-bucket"
-    key            = "env/dev/terraform.tfstate"
+    bucket         = "terraform-state-bucket"
+    key            = "integration/terraform.tfstate"
     region         = "us-east-1"
     use_lockfile   = true
     encrypt        = true
   }
+}
+
+data "terraform_remote_state" "cluster" {
+  backend = "s3"
+  config = {
+    bucket = "terraform-state-bucket"
+    key    = "cluster/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+locals {
+  vpc_id                = data.terraform_remote_state.cluster.outputs.vpc_id
+  private_subnet_ids    = data.terraform_remote_state.cluster.outputs.private_subnets
 }

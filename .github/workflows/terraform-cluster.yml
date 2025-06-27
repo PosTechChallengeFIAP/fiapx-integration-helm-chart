@@ -26,13 +26,7 @@ jobs:
       - name: Create S3 bucket for Terraform state (Cluster)
         run: |
           aws s3api create-bucket \
-            --bucket terraform-cluster-state-bucket \
-            --region us-east-1
-
-      - name: Create S3 bucket for Terraform state (Integration)
-        run: |
-          aws s3api create-bucket \
-            --bucket terraform-integration-state-bucket \
+            --bucket terraform-state-bucket \
             --region us-east-1
 
       - name: Install Terraform
@@ -52,15 +46,3 @@ jobs:
           -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
           -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}"
-
-      - name: Export cluster outputs
-        working-directory: ./.github/scripts
-        run: |
-          chmod +x ./terraform_output.sh
-          ./terraform_output.sh
-
-      - name: Upload Output
-        working-directory: ./terraform/cluster
-        run: |
-          aws s3 cp ../integration/cluster_outputs.json s3://terraform-integration-state-bucket/cluster_outputs.json
-

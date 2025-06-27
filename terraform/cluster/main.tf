@@ -39,8 +39,8 @@ output "private_subnets" {
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-cluster-state-bucket"
-    key            = "env/dev/terraform.tfstate"
+    bucket         = "terraform-state-bucket"
+    key            = "cluster/terraform.tfstate"
     region         = "us-east-1"
     use_lockfile   = true
     encrypt        = true
