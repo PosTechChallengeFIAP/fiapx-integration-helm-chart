@@ -4,7 +4,7 @@ fiapx-user-management:
   image:
     repository: loadinggreg/fiapx-user-management
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   service:
     type: LoadBalancer
@@ -30,7 +30,7 @@ fiapx-video-processor:
   image:
     repository: loadinggreg/fiapx-video-processor
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   service:
     type: LoadBalancer
