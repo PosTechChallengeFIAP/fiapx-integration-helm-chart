@@ -53,14 +53,11 @@ jobs:
           -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}"
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
       - name: Export cluster outputs
         working-directory: ./terraform/cluster
         run: |
           export TF_LOG=ERROR
-          terraform output -json | jq 'map_values(.value)' > ../integration/raw_cluster_outputs.json
+          terraform output -json > ../integration/raw_cluster_outputs.json
 
       - name: Clean JSON with jq
         working-directory: ./terraform/cluster
