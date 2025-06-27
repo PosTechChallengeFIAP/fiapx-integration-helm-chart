@@ -34,7 +34,7 @@ jobs:
         run: |
           NLB_DNS=$(kubectl get svc fiapx-user-management-svc -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
           echo $NLB_DNS
-          ENCODED_NLB_DNS=$(echo -n "$NLB_DNS" | base64)
+          ENCODED_NLB_DNS=$(echo -n "${NLB_DNS}" | base64)
           echo "nlb_dns=${ENCODED_NLB_DNS}" >> "$GITHUB_OUTPUT"
 
   terraform:
