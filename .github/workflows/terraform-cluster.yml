@@ -32,6 +32,10 @@ jobs:
           export TF_LOG=DEBUG
           terraform init
 
+      - name: Destroy Previous Cluster
+        run: |
+          terraform destroy -target=aws_eks_cluster.main
+
       - name: Terraform Apply
         working-directory: ./terraform/cluster
         run: |
