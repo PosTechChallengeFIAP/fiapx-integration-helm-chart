@@ -1,7 +1,7 @@
 
 
 resource "aws_s3_bucket" "output_bucket" {
-  bucket = "fiapx-resulted-zipfiles-0"
+  bucket = "fiapx-resulted-zipfiles-1"
 
   tags = {
     Name        = "Output"
@@ -13,12 +13,12 @@ resource "aws_s3_bucket_ownership_controls" "output_bucket" {
   bucket = aws_s3_bucket.output_bucket.id
 
   rule {
-    object_ownership = "BucketOwnerPreferred"
+    object_ownership = "BucketOwnerEnforced"
   }
 }
 
 resource "aws_s3_bucket" "uploads_bucket" {
-  bucket = "fiapx-uploaded-videos-0"
+  bucket = "fiapx-uploaded-videos-1"
 
   tags = {
     Name        = "Uploads"
@@ -30,6 +30,6 @@ resource "aws_s3_bucket_ownership_controls" "uploads_bucket" {
   bucket = aws_s3_bucket.uploads_bucket.id
 
   rule {
-    object_ownership = "BucketOwnerPreferred"
+    object_ownership = "BucketOwnerEnforced"
   }
 }
