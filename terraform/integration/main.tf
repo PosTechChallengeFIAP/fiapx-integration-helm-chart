@@ -7,7 +7,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-bucket"
+    bucket         = "fiapx-terraform-state-bucket"
     key            = "integration/terraform.tfstate"
     region         = "us-east-1"
     use_lockfile   = true
@@ -18,7 +18,7 @@ terraform {
 data "terraform_remote_state" "cluster" {
   backend = "s3"
   config = {
-    bucket = "terraform-state-bucket"
+    bucket = "fiapx-terraform-state-bucket"
     key    = "cluster/terraform.tfstate"
     region = "us-east-1"
   }
