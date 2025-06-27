@@ -24,3 +24,13 @@ module "vpc" {
     Environment = "dev"
   }
 }
+
+terraform {
+  backend "s3" {
+    bucket         = "terraform-cluster-state-bucket"
+    key            = "env/dev/terraform.tfstate"
+    region         = var.aws_region
+    dynamodb_table = "terraform-locks" # For state locking
+    encrypt        = true
+  }
+}

@@ -51,3 +51,25 @@ resource "aws_s3_bucket_acl" "uploads_bucket" {
     aws_s3_bucket_ownership_controls.uploads_bucket
   ]
 }
+
+resource "aws_s3_bucket" "tf_state" {
+  bucket = "terraform-cluster-state-bucket"
+  versioning {
+    enabled = true
+  }
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
+
+resource "aws_s3_bucket_ownership_controls" "tf_state" {
+  bucket = aws_s3_bucket.tf_state.id
+
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
+}
