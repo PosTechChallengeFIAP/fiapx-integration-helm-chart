@@ -68,7 +68,7 @@ jobs:
 
     - name: Deploy Helm chart
       run: |
-        helm upgrade --install $RELEASE_NAME ./ --namespace default --create-namespace
+        helm upgrade --install -f values_aws.yaml $RELEASE_NAME ./ --namespace default --create-namespace
 
     - name: Sleep for 30 seconds
       run: sleep 30
