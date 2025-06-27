@@ -43,7 +43,7 @@ resource "aws_apigatewayv2_vpc_link" "eks_vpc_link" {
   security_group_ids = [aws_security_group.api_gateway_sg.id]
 }
 
-resource "aws_apigatewayv2_integration" "user_management" {
+resource "aws_apigatewayv2_integration" "eks_http_api" {
   api_id             = aws_apigatewayv2_api.eks_http_api.id
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
