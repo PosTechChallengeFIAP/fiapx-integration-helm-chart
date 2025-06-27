@@ -2,6 +2,10 @@ variable "nlb_dns" {
   type = string
 }
 
+variable "nlb_arn" {
+  type = string
+}
+
 variable "aws_region" {
   description = "The AWS region to deploy resources in"
   type        = string

@@ -1,66 +1,39 @@
-resource "aws_apigatewayv2_api" "eks_http_api" {
-  name          = "eks-http-api"
-  protocol_type = "HTTP"
-
-  cors_configuration {
-    allow_origins = ["*"]
-    allow_methods = ["POST", "GET", "OPTIONS", "DELETE", "PATCH", "PUT"]
-    allow_headers = ["content-type", "authorization"]
-    max_age = 300
-  }
+resource "aws_api_gateway_rest_api" "eks_rest_api" {
+  name        = "eks-rest-api"
+  description = "REST API for EKS via NLB"
 }
 
-resource "aws_security_group" "api_gateway_sg" {
-  name        = "api-gateway-sg"
-  description = "Allow API Gateway VPC Link to reach EKS NLB"
-  vpc_id      = local.vpc_id
-
-  # Outbound to EKS app 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Ingress typically not needed for VPC Link
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow all temporarily (can tighten later)"
-  }
-
-  tags = {
-    Name = "api-gateway-sg"
-  }
+resource "aws_api_gateway_vpc_link" "eks_vpc_link" {
+  name        = "eks-vpc-link"
+  target_arns = [var.nlb_arn]  # Replace with your actual NLB ARN
 }
 
-resource "aws_apigatewayv2_vpc_link" "eks_vpc_link" {
-  name               = "eks-vpc-link"
-  subnet_ids         = local.private_subnet_ids
-  security_group_ids = [aws_security_group.api_gateway_sg.id]
+resource "aws_api_gateway_resource" "proxy" {
+  rest_api_id = aws_api_gateway_rest_api.eks_rest_api.id
+  parent_id   = aws_api_gateway_rest_api.eks_rest_api.root_resource_id
+  path_part   = "{proxy+}"
 }
 
-resource "aws_apigatewayv2_integration" "eks_http_api" {
-  api_id             = aws_apigatewayv2_api.eks_http_api.id
-  integration_type   = "HTTP_PROXY"
-  integration_method = "ANY"
-  integration_uri    = var.nlb_dns
-  connection_type    = "VPC_LINK"
-  connection_id      = aws_apigatewayv2_vpc_link.eks_vpc_link.id
+resource "aws_api_gateway_method" "proxy_method" {
+  rest_api_id   = aws_api_gateway_rest_api.eks_rest_api.id
+  resource_id   = aws_api_gateway_resource.proxy.id
+  http_method   = "ANY"
+  authorization = "NONE"
 }
 
-resource "aws_apigatewayv2_route" "proxy_route" {
-  api_id    = aws_apigatewayv2_api.eks_http_api.id
-  route_key = "ANY /{proxy+}"
-  target    = "integrations/${aws_apigatewayv2_integration.eks_http_api.id}"
+resource "aws_api_gateway_integration" "proxy_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.eks_rest_api.id
+  resource_id             = aws_api_gateway_resource.proxy.id
+  http_method             = aws_api_gateway_method.proxy_method.http_method
+  integration_http_method = "ANY"
+  type                    = "HTTP_PROXY"
+  uri                     = "http://${var.nlb_dns}:80"
+  connection_type         = "VPC_LINK"
+  connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
 }
 
-resource "aws_apigatewayv2_stage" "default" {
-  api_id      = aws_apigatewayv2_api.eks_http_api.id
-  name        = "$default"
-  auto_deploy = true
+resource "aws_api_gateway_deployment" "eks_deployment" {
+  rest_api_id = aws_api_gateway_rest_api.eks_rest_api.id
+  stage_name  = "prod"
+  depends_on  = [aws_api_gateway_integration.proxy_integration]
 }
-
