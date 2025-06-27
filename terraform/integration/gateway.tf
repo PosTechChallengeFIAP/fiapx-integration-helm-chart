@@ -46,6 +46,8 @@ resource "aws_api_gateway_integration" "proxy_get_integration" {
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
+
+  depends_on = [aws_api_gateway_method.proxy_get]
 }
 
 resource "aws_api_gateway_integration" "proxy_post_integration" {
@@ -57,6 +59,8 @@ resource "aws_api_gateway_integration" "proxy_post_integration" {
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
+
+  depends_on = [aws_api_gateway_method.proxy_post]
 }
 
 resource "aws_api_gateway_integration" "proxy_put_integration" {
@@ -68,6 +72,8 @@ resource "aws_api_gateway_integration" "proxy_put_integration" {
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
+
+  depends_on = [aws_api_gateway_method.proxy_put]
 }
 
 # Methods
@@ -102,6 +108,8 @@ resource "aws_api_gateway_integration" "root_get_integration" {
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
+
+  depends_on = [aws_api_gateway_method.root_get]
 }
 
 resource "aws_api_gateway_integration" "root_post_integration" {
@@ -113,6 +121,8 @@ resource "aws_api_gateway_integration" "root_post_integration" {
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
+
+  depends_on = [aws_api_gateway_method.root_post]
 }
 
 resource "aws_api_gateway_integration" "root_put_integration" {
@@ -124,6 +134,8 @@ resource "aws_api_gateway_integration" "root_put_integration" {
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.eks_vpc_link.id
+
+  depends_on = [aws_api_gateway_method.root_put]
 }
 
 resource "aws_api_gateway_deployment" "eks_deployment" {
