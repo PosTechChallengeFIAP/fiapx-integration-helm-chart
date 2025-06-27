@@ -59,7 +59,12 @@ jobs:
       - name: Export cluster outputs
         working-directory: ./terraform/cluster
         run: |
-          terraform output -json | jq 'map_values(.value)' > ../integration/cluster_outputs.json
+          export TF_LOG=ERROR
+          terraform output -json | jq 'map_values(.value)' > ../integration/raw_cluster_outputs.json
+
+      - name: Clean JSON with jq
+        working-directory: ./terraform/cluster
+        run: jq 'map_values(.value)' ../integration/raw_cluster_outputs.json > ../integration/cluster_outputs.json
 
       - name: Upload Output
         working-directory: ./terraform/cluster
