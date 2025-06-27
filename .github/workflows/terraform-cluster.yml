@@ -23,6 +23,12 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
+      - name: Create S3 bucket for Terraform state
+        run: |
+          aws s3api create-bucket \
+            --bucket terraform-cluster-state-bucket \
+            --region us-east-1
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
 
