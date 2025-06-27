@@ -56,8 +56,7 @@ jobs:
       - name: Export cluster outputs
         working-directory: ./terraform/cluster
         run: |
-          export TF_LOG=ERROR
-          terraform output -json > ../integration/cluster_outputs.json
+          terraform output -json > ../integration/cluster_outputs.json  2>/dev/null
 
       - name: Upload Output
         working-directory: ./terraform/cluster
