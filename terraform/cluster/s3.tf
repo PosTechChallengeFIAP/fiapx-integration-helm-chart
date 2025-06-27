@@ -52,7 +52,7 @@ resource "aws_s3_bucket_acl" "uploads_bucket" {
   ]
 }
 
-resource "aws_s3_bucket" "tf_state" {
+resource "aws_s3_bucket" "terraform-cluster-state-bucket" {
   bucket = "terraform-cluster-state-bucket"
   versioning {
     enabled = true
@@ -66,8 +66,8 @@ resource "aws_s3_bucket" "tf_state" {
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "tf_state" {
-  bucket = aws_s3_bucket.tf_state.id
+resource "aws_s3_bucket_ownership_controls" "terraform-cluster-state-bucket" {
+  bucket = aws_s3_bucket.terraform-cluster-state-bucket.id
 
   rule {
     object_ownership = "BucketOwnerEnforced"
