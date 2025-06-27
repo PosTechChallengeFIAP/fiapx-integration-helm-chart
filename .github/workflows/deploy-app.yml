@@ -2,7 +2,7 @@ name: Deploy Helm Chart to EKS
 
 on:
   workflow_run:
-    workflows: ["Terraform Deploy"]
+    workflows: ["Terraform Cluster Deploy"]
     types:
       - completed
 
