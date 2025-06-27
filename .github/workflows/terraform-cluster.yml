@@ -34,7 +34,7 @@ jobs:
 
       - name: Destroy Previous Cluster
         run: |
-          terraform destroy -target=aws_eks_cluster.main
+          terraform destroy
 
       - name: Terraform Apply
         working-directory: ./terraform/cluster
