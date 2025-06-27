@@ -17,15 +17,6 @@ resource "aws_s3_bucket_ownership_controls" "output_bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "output_bucket" {
-  bucket = aws_s3_bucket.output_bucket.id
-  acl    = "private"
-
-  depends_on = [
-    aws_s3_bucket_ownership_controls.output_bucket
-  ]
-}
-
 resource "aws_s3_bucket" "uploads_bucket" {
   bucket = "fiapx-uploaded-videos-0"
 
@@ -41,13 +32,4 @@ resource "aws_s3_bucket_ownership_controls" "uploads_bucket" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
-}
-
-resource "aws_s3_bucket_acl" "uploads_bucket" {
-  bucket = aws_s3_bucket.uploads_bucket.id
-  acl    = "private"
-
-  depends_on = [
-    aws_s3_bucket_ownership_controls.uploads_bucket
-  ]
 }
