@@ -32,10 +32,6 @@ jobs:
           export TF_LOG=DEBUG
           terraform init
 
-      - name: Destroy Previous Cluster
-        run: |
-          terraform destroy
-
       - name: Terraform Apply
         working-directory: ./terraform/cluster
         run: |
