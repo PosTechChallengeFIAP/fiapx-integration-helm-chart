@@ -43,11 +43,10 @@ jobs:
       - name: Terraform Apply
         working-directory: ./terraform/integration
         run: |
-          NLB_DNS=$(kubectl get svc fiapx-user-management-svc -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
           terraform apply -auto-approve \
           -var "aws_region=us-east-1" \
           -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
           -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" \
-          -var "nlb_dns=${NLB_DNS}"
+          -var "nlb_dns=$(kubectl get svc fiapx-user-management-svc -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
 
