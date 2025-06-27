@@ -54,9 +54,10 @@ jobs:
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}"
 
       - name: Export cluster outputs
-        working-directory: ./terraform/cluster
+        working-directory: ./.github/scripts
         run: |
-          terraform output -json >> ../integration/cluster_outputs.json
+          chmod +x ./write_outputs.sh
+          ./write_outputs.sh
 
       - name: Upload Output
         working-directory: ./terraform/cluster
