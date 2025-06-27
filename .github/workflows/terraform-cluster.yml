@@ -56,7 +56,7 @@ jobs:
       - name: Export cluster outputs
         working-directory: ./terraform/cluster
         run: |
-          terraform output -json > ../integration/cluster_outputs.json  2>/dev/null
+          terraform output -json >> ../integration/cluster_outputs.json
 
       - name: Upload Output
         working-directory: ./terraform/cluster
