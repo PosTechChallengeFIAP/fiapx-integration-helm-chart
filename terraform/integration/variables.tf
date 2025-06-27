@@ -1,13 +1,5 @@
-variable "vpc_id" {
+variable "nlb_dns" {
   type = string
-}
-
-variable "cluster_endpoint" {
-  type = string
-}
-
-variable "private_subnet_ids" {
-  type = list(string)
 }
 
 variable "aws_region" {

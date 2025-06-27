@@ -33,6 +33,7 @@ jobs:
         id: get_nlb
         run: |
           NLB_DNS=$(kubectl get svc fiapx-user-management-svc -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          echo $NLB_DNS
           echo "nlb_dns=$NLB_DNS" >> "$GITHUB_OUTPUT"
 
   terraform:
@@ -74,5 +75,5 @@ jobs:
           -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
           -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" \
-          -var "cluster_endpoint=${{ needs.service-dns.outputs.nlb_dns }}"
+          -var "nlb_dns=${{ needs.service-dns.outputs.nlb_dns }}"
 

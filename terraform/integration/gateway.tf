@@ -47,7 +47,7 @@ resource "aws_apigatewayv2_integration" "user_management" {
   api_id             = aws_apigatewayv2_api.eks_http_api.id
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
-  integration_uri    = local.cluster_endpoint
+  integration_uri    = var.nlb_dns
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.eks_vpc_link.id
 }
