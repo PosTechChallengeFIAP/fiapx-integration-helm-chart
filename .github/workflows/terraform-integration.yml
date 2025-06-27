@@ -43,16 +43,12 @@ jobs:
       - name: Terraform Apply
         working-directory: ./terraform/integration
         run: |
-          NLB_DNS=$(aws elbv2 describe-load-balancers --query "LoadBalancers[?DNSName=='$(kubectl get svc fiapx-user-management-svc -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')'].[LoadBalancerArn]" --output text)
-          echo ${NLB_DNS}
-          LISTENER_ARN=$(aws elbv2 describe-listeners \
-          --load-balancer-arn "${NLB_DNS}" \
-          --query "Listeners[0].ListenerArn" \
-          --output text)
+          NLB_ENDPOINT=$(kubectl get svc fiapx-user-management-svc -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          echo ${NLB_ENDPOINT}
           terraform apply -auto-approve \
           -var "aws_region=us-east-1" \
           -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
           -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" \
-          -var "nlb_dns=${LISTENER_ARN}"
+          -var "nlb_dns=http://${NLB_ENDPOINT}:80"
 
