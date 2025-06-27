@@ -25,7 +25,7 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   rest_api_id             = aws_api_gateway_rest_api.eks_rest_api.id
   resource_id             = aws_api_gateway_resource.proxy.id
   http_method             = aws_api_gateway_method.proxy_method.http_method
-  integration_http_method = "ANY"
+  integration_http_method = "GET"
   type                    = "HTTP_PROXY"
   uri                     = "http://${var.nlb_dns}:80"
   connection_type         = "VPC_LINK"
