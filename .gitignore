@@ -1,3 +1,7 @@
 terraform/.terraform/
 terraform/terraform.tfvars
+terraform/cluster/.terraform/
+terraform/cluster/terraform.tfvars
+terraform/integration/.terraform
+terraform/integration/terraform.tfvars
 charts/*.tgz

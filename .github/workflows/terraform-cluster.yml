@@ -1,4 +1,4 @@
-name: Terraform Deploy
+name: Terraform Cluster Deploy
 
 on:
   push:
@@ -27,17 +27,22 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        working-directory: ./terraform
+        working-directory: ./terraform/cluster
         run: |
           export TF_LOG=DEBUG
           terraform init
 
       - name: Terraform Apply
-        working-directory: ./terraform
+        working-directory: ./terraform/cluster
         run: |
           terraform apply -auto-approve \
           -var "aws_region=us-east-1" \
           -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
           -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}"
+
+      - name: Export cluster outputs
+        working-directory: ./terraform/cluster
+        run: |
+          terraform output -json > ../integration/cluster_outputs.json
 
