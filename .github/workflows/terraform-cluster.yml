@@ -26,7 +26,7 @@ jobs:
       - name: Create S3 bucket for Terraform state (Cluster)
         run: |
           aws s3api create-bucket \
-            --bucket terraform-state-bucket \
+            --bucket fiapx-terraform-state-bucket \
             --region us-east-1
 
       - name: Install Terraform
