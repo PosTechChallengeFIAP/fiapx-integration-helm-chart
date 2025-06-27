@@ -56,8 +56,8 @@ jobs:
       - name: Export cluster outputs
         working-directory: ./.github/scripts
         run: |
-          chmod +x ./write_outputs.sh
-          ./write_outputs.sh
+          chmod +x ./terraform_output.sh
+          ./terraform_output.sh
 
       - name: Upload Output
         working-directory: ./terraform/cluster
