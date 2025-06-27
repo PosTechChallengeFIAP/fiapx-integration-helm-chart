@@ -39,7 +39,7 @@ resource "aws_security_group" "api_gateway_sg" {
 
 resource "aws_apigatewayv2_vpc_link" "eks_vpc_link" {
   name               = "eks-vpc-link"
-  subnet_ids         = local.vpc_id
+  subnet_ids         = local.private_subnet_ids
   security_group_ids = [aws_security_group.api_gateway_sg.id]
 }
 
