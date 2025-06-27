@@ -51,6 +51,12 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
+      - name: Download file from S3
+        working-directory: ./terraform/integration
+        run: |
+          aws s3 cp s3://terraform-integration-state-bucket/cluster_outputs.json ./cluster_outputs.json
+
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
 

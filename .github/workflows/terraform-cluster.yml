@@ -23,10 +23,16 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      - name: Create S3 bucket for Terraform state
+      - name: Create S3 bucket for Terraform state (Cluster)
         run: |
           aws s3api create-bucket \
             --bucket terraform-cluster-state-bucket \
+            --region us-east-1
+
+      - name: Create S3 bucket for Terraform state (Integration)
+        run: |
+          aws s3api create-bucket \
+            --bucket terraform-integration-state-bucket \
             --region us-east-1
 
       - name: Install Terraform
@@ -51,4 +57,9 @@ jobs:
         working-directory: ./terraform/cluster
         run: |
           terraform output -json > ../integration/cluster_outputs.json
+
+      - name:
+        working-directory: ./terraform/cluster
+        run: |
+          aws s3 cp ../integration/cluster_outputs.json s3://terraform-integration-state-bucket/cluster_outputs.json
 
