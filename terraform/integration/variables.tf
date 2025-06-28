@@ -1,8 +1,16 @@
-variable "nlb_dns" {
+variable "user_management_nlb_dns" {
   type = string
 }
 
-variable "nlb_arn" {
+variable "user_management_nlb_arn" {
+  type = string
+}
+
+variable "video_processor_nlb_dns" {
+  type = string
+}
+
+variable "video_processor_nlb_arn" {
   type = string
 }
 
