@@ -20,6 +20,10 @@ resource "aws_api_gateway_method" "proxy_get" {
   resource_id   = aws_api_gateway_resource.proxy.id
   http_method   = "GET"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
 }
 
 resource "aws_api_gateway_method" "proxy_post" {
@@ -27,6 +31,10 @@ resource "aws_api_gateway_method" "proxy_post" {
   resource_id   = aws_api_gateway_resource.proxy.id
   http_method   = "POST"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
 }
 
 resource "aws_api_gateway_method" "proxy_put" {
@@ -34,6 +42,10 @@ resource "aws_api_gateway_method" "proxy_put" {
   resource_id   = aws_api_gateway_resource.proxy.id
   http_method   = "PUT"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
 }
 
 # Integrations
