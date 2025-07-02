@@ -33,7 +33,7 @@ fiapx-video-processor:
   storage:
     type: local
     uploadDir: uploads
-    ouputDir: output
+    outputDir: output
     aws:
       credentials: session
       region: aws-region
@@ -46,5 +46,5 @@ fiapx-video-processor:
     size: 10Gi
     storageClass: standard
 
-  user-management:
+  userManagement:
     url: "http://fiapx-user-management-cluster-ip-svc:80"
