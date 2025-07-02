@@ -1,6 +1,10 @@
 resource "aws_api_gateway_rest_api" "video_processor_api" {
   name        = "video-processor-api"
   description = "FIAPX Video Processor REST API for EKS via NLB"
+
+  binary_media_types = [
+    "multipart/form-data"
+  ]
 }
 
 resource "aws_api_gateway_vpc_link" "video_processor_vpc_link" {
