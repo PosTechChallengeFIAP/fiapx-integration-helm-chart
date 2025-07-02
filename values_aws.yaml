@@ -45,3 +45,6 @@ fiapx-video-processor:
   persistence:
     size: 
     storageClass: 
+
+  user-management:
+    url: "http://fiapx-user-management-cluster-ip-svc:80"
