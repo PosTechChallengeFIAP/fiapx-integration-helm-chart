@@ -18,3 +18,8 @@ variable "aws_session_token" {
   description = "AWS Session Token"
   type        = string
 }
+
+variable "lab_role_arn" {
+  description = "LabRole ARN"
+  type        = string
+}
