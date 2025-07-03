@@ -84,7 +84,7 @@ jobs:
     - name: Add SQS Endpoint
       run: |
         echo ${{ env.SQS_QUEUE_URL }}
-        kubectl patch secret my-secret --patch '
+        kubectl patch secret aws-secret --patch '
         data:
           aws_sqs_endpoint: ${{ env.SQS_QUEUE_URL }}
         '
