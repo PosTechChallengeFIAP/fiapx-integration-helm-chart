@@ -49,6 +49,9 @@ jobs:
       with:
         version: 'latest'
 
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v2
+
     - name: Delete all secrets
       run: |
         kubectl delete secrets --all
@@ -59,16 +62,10 @@ jobs:
         --from-literal=mysql-root-password=${{ secrets.TF_VAR_DB_PASSWORD }} \
         --from-literal=mysql-password=${{ secrets.TF_VAR_DB_PASSWORD }}
 
-    - name: Download Output Artifact
-      uses: actions/download-artifact@v4
-      with:
-        run-id: ${{ github.event.workflow_run.id }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        name: tf-output
-
     - name: Create Aws secret
+      working-directory: ./terraform/cluster
       run: |
-        value=$(jq -r '.sqs_queue_url.value' tf-output.json)
+        value=terraform output -raw sqs_queue_url
         echo $value
         kubectl create secret generic aws-secret \
         --from-literal=access-key=${{ secrets.AWS_ACCESS_KEY_ID }} \
