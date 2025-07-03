@@ -119,3 +119,7 @@ resource "aws_api_gateway_stage" "video_processor_api_stage" {
   rest_api_id   = aws_api_gateway_rest_api.video_processor_api.id
   deployment_id = aws_api_gateway_deployment.video_processor_api_deployment.id
 }
+
+output "api_gateway_url" {
+  value = aws_api_gateway_deployment.video_processor_api_deployment.invoke_url
+}

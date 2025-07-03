@@ -61,3 +61,15 @@ jobs:
           -var "video_processor_nlb_dns=${VP_NLB_ENDPOINT}" \
           -var "video_processor_nlb_arn=${VP_NLB_ARN_NUMBER}"
 
+  trigger-deploy:
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call lambda repo workflow
+        run: |
+          curl -X POST https://api.github.com/repos/PosTechChallengeFIAP/fiapx_lambda_function/dispatches \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{ secrets.LAMBDA_REPO_TOKEN }}" \
+          -d '{"event_type": "trigger-lambda-deploy"}'
+
