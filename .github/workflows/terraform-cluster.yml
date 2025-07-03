@@ -56,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tf-output
-          path: tf-output.json
+          path: ./terraform/cluster/tf-output.json
