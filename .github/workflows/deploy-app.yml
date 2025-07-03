@@ -66,7 +66,9 @@ jobs:
       working-directory: ./terraform/cluster
       run: 
         terraform init
-        echo "SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url)" >> $GITHUB_ENV
+        SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url 2>/dev/null || echo "")
+        echo "SQS_QUEUE_URL=$SQS_QUEUE_URL" >> $GITHUB_ENV
+
 
     - name: Create Aws secret
       run: |
