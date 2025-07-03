@@ -51,6 +51,8 @@ jobs:
 
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
 
     - name: Delete all secrets
       run: |
@@ -70,17 +72,22 @@ jobs:
     - name: Capture SQS Endpoint
       working-directory: ./terraform/cluster
       run:
-        SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url | sed 's/::.*//')
-        echo "SQS_QUEUE_URL=$SQS_QUEUE_URL" >> $GITHUB_ENV
+        echo "SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url)" >> $GITHUB_ENV
 
     - name: Create Aws secret
       run: |
-        echo "${{ env.SQS_QUEUE_URL }}" 
         kubectl create secret generic aws-secret \
         --from-literal=access-key=${{ secrets.AWS_ACCESS_KEY_ID }} \
         --from-literal=secret-key=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-        --from-literal=session-token=${{ secrets.AWS_SESSION_TOKEN }} \
-        --from-literal=aws-sqs-endpoint=${{ env.SQS_QUEUE_URL }}
+        --from-literal=session-token=${{ secrets.AWS_SESSION_TOKEN }} 
+
+    - name: Add SQS Endpoint
+      run: |
+        echo ${{ env.SQS_QUEUE_URL }}
+        kubectl patch secret my-secret --patch '
+        data:
+          aws_sqs_endpoint: ${{ env.SQS_QUEUE_URL }}
+        '
 
     - name: Uninstall If Exists
       run: |
