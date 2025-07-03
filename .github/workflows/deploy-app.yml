@@ -62,17 +62,20 @@ jobs:
         --from-literal=mysql-root-password=${{ secrets.TF_VAR_DB_PASSWORD }} \
         --from-literal=mysql-password=${{ secrets.TF_VAR_DB_PASSWORD }}
 
+    - name: Capture Terraform Output
+      run: 
+        terraform init
+        echo "SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url)" >> $GITHUB_ENV
+        echo ${{ env.SQS_QUEUE_URL }}
+
     - name: Create Aws secret
       working-directory: ./terraform/cluster
       run: |
-        terraform init
-        value=$(terraform output -raw sqs_queue_url)
-        echo $value
         kubectl create secret generic aws-secret \
         --from-literal=access-key=${{ secrets.AWS_ACCESS_KEY_ID }} \
         --from-literal=secret-key=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
         --from-literal=session-token=${{ secrets.AWS_SESSION_TOKEN }} \
-        --from-literal=aws-sqs-endpoint=$value
+        --from-literal=aws-sqs-endpoint=${{ env.SQS_QUEUE_URL }}
 
     - name: Uninstall If Exists
       run: |
