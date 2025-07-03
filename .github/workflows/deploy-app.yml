@@ -70,7 +70,7 @@ jobs:
     - name: Capture SQS Endpoint
       working-directory: ./terraform/cluster
       run:
-        terraform output -raw sqs_queue_url
+        echo "SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url)" >> $GITHUB_ENV
 
     - name: Create Aws secret
       run: |
