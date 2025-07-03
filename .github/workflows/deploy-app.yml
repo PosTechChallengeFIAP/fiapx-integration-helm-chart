@@ -59,12 +59,20 @@ jobs:
         --from-literal=mysql-root-password=${{ secrets.TF_VAR_DB_PASSWORD }} \
         --from-literal=mysql-password=${{ secrets.TF_VAR_DB_PASSWORD }}
 
+    - name: Download Output Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: tf-output
+
     - name: Create Aws secret
       run: |
+        value=$(jq -r '.sqs_queue_url.value' tf-output.json)
+        echo $value
         kubectl create secret generic aws-secret \
         --from-literal=access-key=${{ secrets.AWS_ACCESS_KEY_ID }} \
         --from-literal=secret-key=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-        --from-literal=session-token=${{ secrets.AWS_SESSION_TOKEN }}
+        --from-literal=session-token=${{ secrets.AWS_SESSION_TOKEN }} \
+        --from-literal=aws-sqs-endpoint=$value
 
     - name: Uninstall If Exists
       run: |
