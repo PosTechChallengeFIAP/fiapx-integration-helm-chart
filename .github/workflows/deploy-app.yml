@@ -65,6 +65,7 @@ jobs:
     - name: Create Aws secret
       working-directory: ./terraform/cluster
       run: |
+        terraform init
         value=$(terraform output -raw sqs_queue_url)
         echo $value
         kubectl create secret generic aws-secret \
