@@ -12,5 +12,5 @@ resource "aws_sqs_queue" "processing-request-queue" {
 }
 
 output "sqs_queue_url" {
-  value = aws_sqs_queue.processing-request-queue.url
+  value = base64encode(aws_sqs_queue.processing-request-queue.url)
 }
