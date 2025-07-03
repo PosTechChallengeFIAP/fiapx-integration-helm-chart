@@ -62,10 +62,14 @@ jobs:
         --from-literal=mysql-root-password=${{ secrets.TF_VAR_DB_PASSWORD }} \
         --from-literal=mysql-password=${{ secrets.TF_VAR_DB_PASSWORD }}
 
-    - name: Capture Terraform Output
+    - name: Terraform init
       working-directory: ./terraform/cluster
       run: 
         terraform init
+
+    - name: Capture SQS Endpoint
+      working-directory: ./terraform/cluster
+      run:
         terraform output -raw sqs_queue_url
 
     - name: Create Aws secret
