@@ -65,7 +65,7 @@ jobs:
     - name: Create Aws secret
       working-directory: ./terraform/cluster
       run: |
-        value=terraform output -raw sqs_queue_url
+        value=$(terraform output -raw sqs_queue_url)
         echo $value
         kubectl create secret generic aws-secret \
         --from-literal=access-key=${{ secrets.AWS_ACCESS_KEY_ID }} \
