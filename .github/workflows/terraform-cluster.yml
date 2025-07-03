@@ -49,6 +49,7 @@ jobs:
           -var "lab_role_arn=${{ secrets.LAB_ROLE_ARN }}"
 
       - name: Save Terraform Output
+        working-directory: ./terraform/cluster
         run: terraform output -json > tf-output.json
 
       - name: Upload Output Artifact
