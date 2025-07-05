@@ -1,0 +1,45 @@
+name: Run Postman Tests with Newman
+
+on:
+  repository_dispatch:
+    types: [trigger-newman-tests]
+
+jobs:
+  newman-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+            terraform_wrapper: false
+
+      - name: Terraform init
+        working-directory: ./terraform/integration
+        run: 
+            terraform init
+
+      - name: Capture SQS Endpoint
+        working-directory: ./terraform/integration
+        run:
+            echo "USER_MANAGEMENT=$(terraform output -raw user_management_api_gateway_url)" >> $GITHUB_ENV
+            echo "VIDEO_PROCESSOR=$(terraform output -raw video_processor_api_gateway_url)" >> $GITHUB_ENV
+
+      - name: Run Collection
+        run: |
+          newman run tests/postman/fiapx.postman_collection.json \
+            -e tests/postman/EKS.postman_environment.json \
+            --env-var "USER_MANAGEMENT=${{ env.USER_MANAGEMENT }}"
+            --env-var "VIDEO_PROCESSOR=${{ env.VIDEO_PROCESSOR }}"
+            --reporters cli,json \
+            --reporter-json-export results.json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: results
+            path: results.json

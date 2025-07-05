@@ -115,3 +115,7 @@ resource "aws_api_gateway_stage" "user_management_api_stage" {
   rest_api_id   = aws_api_gateway_rest_api.user_management_api.id
   deployment_id = aws_api_gateway_deployment.user_management_api_deployment.id
 }
+
+output "user_management_api_gateway_url" {
+  value = "https://${aws_api_gateway_rest_api.user_management_api.id}.execute-api.${var.aws_region}.amazonaws.com/prod"
+}
