@@ -86,7 +86,7 @@ jobs:
         echo ${{ env.SQS_QUEUE_URL }}
         kubectl patch secret aws-secret --patch '
         data:
-          aws_sqs_endpoint: ${{ env.SQS_QUEUE_URL }}
+          aws-sqs-endpoint: ${{ env.SQS_QUEUE_URL }}
         '
 
     - name: Uninstall If Exists

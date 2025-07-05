@@ -1,7 +1,7 @@
 
 
 resource "aws_s3_bucket" "output_bucket" {
-  bucket = "fiapx-resulted-zipfiles-2"
+  bucket = "fiapx-resulted-zipfiles-3"
 
   tags = {
     Name        = "Output"
@@ -18,7 +18,7 @@ resource "aws_s3_bucket_ownership_controls" "output_bucket" {
 }
 
 resource "aws_s3_bucket" "uploads_bucket" {
-  bucket = "fiapx-uploaded-videos-2"
+  bucket = "fiapx-uploaded-videos-3"
 
   tags = {
     Name        = "Uploads"
