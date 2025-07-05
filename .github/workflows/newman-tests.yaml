@@ -40,11 +40,11 @@ jobs:
       - name: Run Collection
         run: |
           newman run tests/postman/fiapx.postman_collection.json \
-            -e tests/postman/EKS.postman_environment.json \
-            --env-var "USER_MANAGEMENT=${{ env.USER_MANAGEMENT }}"
-            --env-var "VIDEO_PROCESSOR=${{ env.VIDEO_PROCESSOR }}"
-            --reporters cli,json \
-            --reporter-json-export results.json
+          -e tests/postman/EKS.postman_environment.json \
+          --env-var "USER_MANAGEMENT=${{ env.USER_MANAGEMENT }}" \
+          --env-var "VIDEO_PROCESSOR=${{ env.VIDEO_PROCESSOR }}" \
+          --reporters cli,json \
+          --reporter-json-export results.json
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
