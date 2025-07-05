@@ -5,16 +5,6 @@ provider "aws" {
   token      = var.aws_session_token
 }
 
-provider "mysql" {
-  endpoint = aws_rds_cluster.aurora_cluster.endpoint
-  username = aws_rds_cluster.aurora_cluster.master_username
-  password = var.db_password
-
-  depends_on = [
-    aws_rds_cluster_instance.aurora_instance
-  ]
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"

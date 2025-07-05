@@ -62,10 +62,6 @@ resource "aws_rds_cluster_instance" "aurora_instance" {
   }
 }
 
-resource "mysql_database" "user_management_db" {
-  name = "user_management_db"
-}
-
 output "aurora_db_endpoint" {
   value = aws_rds_cluster.aurora_cluster.endpoint
 }
