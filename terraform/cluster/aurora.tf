@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "aurora_subnet_group" {
     name       = "fiapx-aurora-subnet-group"
-    subnet_ids = module.vpc.private_subnets
+    subnet_ids = module.vpc.public_subnets
 
     tags = {
         Name = "fiapx-aurora-subnet-group"
@@ -18,7 +18,7 @@ resource "aws_security_group" "aurora_sg" {
         from_port   = 3306
         to_port     = 3306
         protocol    = "tcp"
-        cidr_blocks = ["10.0.0.0/16"]
+        cidr_blocks = ["0.0.0.0/0"]
     }
 
     egress {
@@ -60,6 +60,7 @@ resource "aws_rds_cluster_instance" "aurora_instance" {
   cluster_identifier = aws_rds_cluster.aurora_cluster.id
   instance_class     = "db.t3.medium"
   engine             = aws_rds_cluster.aurora_cluster.engine
+  publicly_accessible = true
 
   tags = {
     Name = "fiapx-aurora-instance"

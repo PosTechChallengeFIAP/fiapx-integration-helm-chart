@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    mysql = {
+      source  = "petoju/mysql"
+      version = "~> 3.0"
+    }
+  }
+}
+
 provider "mysql" {
   endpoint = local.aurora_db_endpoint
   username = "springuser"
