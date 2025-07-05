@@ -121,5 +121,5 @@ resource "aws_api_gateway_stage" "video_processor_api_stage" {
 }
 
 output "api_gateway_url" {
-  value = aws_api_gateway_deployment.video_processor_api_deployment.invoke_url
+  value = "https://${aws_api_gateway_rest_api.video_processor_api.id}.execute-api.${var.aws_region}.amazonaws.com/prod"
 }
