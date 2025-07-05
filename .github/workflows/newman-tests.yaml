@@ -31,9 +31,9 @@ jobs:
         run: 
             terraform init
 
-      - name: Capture SQS Endpoint
+      - name: Capture API Gateway Endpoint
         working-directory: ./terraform/integration
-        run:
+        run: |
             echo "USER_MANAGEMENT=$(terraform output -raw user_management_api_gateway_url)" >> $GITHUB_ENV
             echo "VIDEO_PROCESSOR=$(terraform output -raw video_processor_api_gateway_url)" >> $GITHUB_ENV
 
