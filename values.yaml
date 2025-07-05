@@ -15,6 +15,8 @@ fiapx-user-management:
   mysql:
     database: springdb
     user: springuser
+    host: localhost
+    port: 3306
 
 fiapx-video-processor:
   replicaCount: 2
@@ -41,6 +43,8 @@ fiapx-video-processor:
   mysql:
     database: springdb
     user: springuser
+    host: localhost
+    port: 3306
 
   persistence:
     size: 10Gi

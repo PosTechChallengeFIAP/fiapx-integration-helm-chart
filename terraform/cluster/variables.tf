@@ -18,3 +18,8 @@ variable "aws_session_token" {
   description = "AWS Session Token"
   type        = string
 }
+
+variable "db_password" {
+  description = "Aurora DB Password"
+  type        = string
+}

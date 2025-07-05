@@ -69,10 +69,11 @@ jobs:
       run: 
         terraform init
 
-    - name: Capture SQS Endpoint
+    - name: Capture AWS Endpoints
       working-directory: ./terraform/cluster
-      run:
+      run: |
         echo "SQS_QUEUE_URL=$(terraform output -raw sqs_queue_url)" >> $GITHUB_ENV
+        echo "AURORA_DB_URL=$(terraform output -raw aurora_db_endpoint)" >> $GITHUB_ENV
 
     - name: Create Aws secret
       run: |
@@ -99,7 +100,10 @@ jobs:
 
     - name: Deploy Helm chart
       run: |
-        helm upgrade --install -f values_aws.yaml $RELEASE_NAME ./ --namespace default --create-namespace
+        helm upgrade --install -f values_aws.yaml $RELEASE_NAME \
+        ./ --namespace default --create-namespace \
+        --set fiapx-user-management.mysql.host=${{ env.AURORA_DB_URL }} \
+        --set fiapx-video-processor.mysql.host=${{ env.AURORA_DB_URL }}
 
     - name: Sleep for 10 min
       run: sleep 600
