@@ -5,12 +5,14 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
     tags = {
         Name = "fiapx-aurora-subnet-group"
     }
+
+    depends_on = [module.vpc]
 }
 
 resource "aws_security_group" "aurora_sg" {
     name        = "fiapx-aurora-sg"
     description = "Security group for MySQL database"
-    vpc_id      = aws_vpc.main.id
+    vpc_id      = module.vpc.vpc_id
 
     ingress {
         from_port   = 3306
@@ -29,6 +31,8 @@ resource "aws_security_group" "aurora_sg" {
     tags = {
         Name = "fiapx-aurora-sg"
     }
+
+    depends_on = [module.vpc]
 }
 
 resource "aws_rds_cluster" "aurora_cluster" {
