@@ -340,7 +340,7 @@
 					"script": {
 						"exec": [
 							"const maxRetries = 10;\r",
-							"const retryDelay = 10000; // in milliseconds\r",
+							"const retryDelay = 20000; // in milliseconds\r",
 							"const retryCount = pm.environment.get(\"retryCount\") || 0;\r",
 							"\r",
 							"const responseJson = pm.response.json();\r",
