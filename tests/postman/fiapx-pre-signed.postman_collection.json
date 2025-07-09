@@ -272,7 +272,7 @@
 				"body": {
 					"mode": "file",
 					"file": {
-						"src": "tests/resources/postman/video-teste.mp4"
+						"src": "tests/postman/resources/video-teste.mp4"
 					}
 				},
 				"url": {
