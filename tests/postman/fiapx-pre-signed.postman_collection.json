@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "483938b9-48d9-4606-a5ab-0dc1ad7818cf",
+		"name": "Tests Fiapx - Pre Signed",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8331852"
+	},
+	"item": [
+		{
+			"name": "User Management Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{USER_MANAGEMENT}}/healthz",
+					"host": [
+						"{{USER_MANAGEMENT}}"
+					],
+					"path": [
+						"healthz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Video Processor Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{VIDEO_PROCESSOR}}/healthz",
+					"host": [
+						"{{VIDEO_PROCESSOR}}"
+					],
+					"path": [
+						"healthz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomId = pm.variables.replaceIn('{{$randomUUID}}');\r",
+							"pm.environment.set('USER', \"user-\" + randomId);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"{{USER}}\",\r\n  \"password\": \"{{PASSWORD}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{USER_MANAGEMENT}}/register",
+					"host": [
+						"{{USER_MANAGEMENT}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"pm.environment.set(\"TOKEN\", responseJson.message);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{PASSWORD}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{USER}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{USER_MANAGEMENT}}/getToken",
+					"host": [
+						"{{USER_MANAGEMENT}}"
+					],
+					"path": [
+						"getToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Pocessing Request - PreSigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"pm.environment.set(\"REQUEST_ID\", responseJson.id);\r",
+							"pm.environment.set(\"PRESIGNED_URL\", responseJson.preSignedUrl);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{VIDEO_PROCESSOR}}/process/presign/mp4",
+					"host": [
+						"{{VIDEO_PROCESSOR}}"
+					],
+					"path": [
+						"process",
+						"presign",
+						"mp4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload To Presigned URL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "tests/resources/postman/video-teste.mp4"
+					}
+				},
+				"url": {
+					"raw": "{{PRESIGNED_URL}}",
+					"host": [
+						"{{PRESIGNED_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{VIDEO_PROCESSOR}}/process/{{REQUEST_ID}}/confirmUpload",
+					"host": [
+						"{{VIDEO_PROCESSOR}}"
+					],
+					"path": [
+						"process",
+						"{{REQUEST_ID}}",
+						"confirmUpload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Processing Request By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const maxRetries = 10;\r",
+							"const retryDelay = 10000; // in milliseconds\r",
+							"const retryCount = pm.environment.get(\"retryCount\") || 0;\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"const conditionMet = responseJson.status === \"COMPLETED\";\r",
+							"\r",
+							"if (!conditionMet && retryCount < maxRetries) {\r",
+							"    console.log(`Retrying... attempt ${parseInt(retryCount) + 1}`);\r",
+							"    pm.environment.set(\"retryCount\", parseInt(retryCount) + 1);\r",
+							"\r",
+							"    setTimeout(() => {\r",
+							"        pm.execution.setNextRequest(pm.info.requestName); // retry same request\r",
+							"    }, retryDelay);\r",
+							"} else {\r",
+							"    pm.environment.unset(\"retryCount\");\r",
+							"\r",
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Response status is COMPLETED\", function () {\r",
+							"        pm.expect(responseJson.status).to.eql(\"COMPLETED\");\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{VIDEO_PROCESSOR}}/process/{{REQUEST_ID}}",
+					"host": [
+						"{{VIDEO_PROCESSOR}}"
+					],
+					"path": [
+						"process",
+						"{{REQUEST_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Download Link",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"pm.environment.set(\"DOWNLOAD_URL\", responseJson.message);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{VIDEO_PROCESSOR}}/process/{{REQUEST_ID}}/download/presigned",
+					"host": [
+						"{{VIDEO_PROCESSOR}}"
+					],
+					"path": [
+						"process",
+						"{{REQUEST_ID}}",
+						"download",
+						"presigned"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Zip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DOWNLOAD_URL}}",
+					"host": [
+						"{{DOWNLOAD_URL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

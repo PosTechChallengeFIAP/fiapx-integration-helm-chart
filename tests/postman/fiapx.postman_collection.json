@@ -238,7 +238,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "tests/postman/video-teste-sm.mp4"
+							"src": "tests/resources/postman/video-teste-sm.mp4"
 						}
 					]
 				},

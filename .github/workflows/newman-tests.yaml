@@ -51,3 +51,20 @@ jobs:
         with:
             name: results
             path: results.json
+
+      - name: Run Collection - Pre Signed
+        run: |
+          newman run tests/postman/fiapx-pre-signed.postman_collection.json \
+          -e tests/postman/EKS.postman_environment.json \
+          --env-var "USER_MANAGEMENT=${{ env.USER_MANAGEMENT }}" \
+          --env-var "VIDEO_PROCESSOR=${{ env.VIDEO_PROCESSOR }}" \
+          --reporters cli,json \
+          --reporter-json-export results-pre-signed.json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: preSignedResults
+            path: results-pre-signed.json
+
+      
